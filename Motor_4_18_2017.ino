@@ -128,6 +128,24 @@ void loop() //Note, loop repeats infinitely
   return;
 }
 
+void Drive::Backward(void)
+{
+    analogWrite(E1,0); //Speed 0 Motor 1
+    analogWrite(E2,0); //Speed 0 Motor 2
+    digitalWrite(M1,LOW); //Turn off forward, to make sure
+    digitalWrite(M2,LOW); //Turn off forward, to make sure
+    digitalWrite(M1_R,HIGH);  //Motor 1 backward on 
+    digitalWrite(M2_R,HIGH); //Motor 2 backward on
+    //You could replace the for loop with just analogWrite(E1,M1_PWM); analogWrite(E2,M2_PWM) 
+    for (int i(0);i<101;i++) //This is not really necessary for this system.  But, for a large machine, you would need to ramp up speed gradually
+    {
+      analogWrite(E1,M1_PWM*i/100); //Ramp motor 1 speed up
+      analogWrite(E2,M2_PWM*i/100); //Ramp motor 2 speed up
+      delay(10);
+    }
+  return; // added for backward motion
+}
+
 void Drive::Stop(void)
 {
       for (int i(100);i<0;i--) // Again, you could just set speed to zero for this small system, but for a large system, this ramp down would be needed
